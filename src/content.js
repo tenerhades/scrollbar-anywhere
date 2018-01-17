@@ -618,6 +618,11 @@ ScrollbarAnywhere = (function() {
         break
       }
 
+      if (options.notext && isOverText(ev)) {
+        debug("detected text node, ignoring")
+        break
+      }
+
       if (isOverScrollbar(ev)) {
         debug("detected scrollbar click, ignoring",ev)
         break
@@ -626,11 +631,6 @@ ScrollbarAnywhere = (function() {
       dragElement = findInnermostScrollable(ev.target)
       if (!dragElement) {
         debug("no scrollable ancestor found, ignoring",ev)
-        break
-      }
-
-      if (options.notext && isOverText(ev)) {
-        debug("detected text node, ignoring")
         break
       }
 
