@@ -175,6 +175,14 @@ ScrollbarAnywhere = (function() {
     }
   }
 
+  /*
+  ██████  ██    ██ ████████ ████████  ██████  ███    ██
+  ██   ██ ██    ██    ██       ██    ██    ██ ████   ██
+  ██████  ██    ██    ██       ██    ██    ██ ██ ██  ██
+  ██   ██ ██    ██    ██       ██    ██    ██ ██  ██ ██
+  ██████   ██████     ██       ██     ██████  ██   ████
+  */
+
   // Don't drag when left-clicking on these elements
   const LBUTTON_OVERRIDE_TAGS = ['A','INPUT','SELECT','TEXTAREA','BUTTON','LABEL','OBJECT','EMBED']
   const MBUTTON_OVERRIDE_TAGS = ['A']
