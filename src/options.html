@@ -99,31 +99,22 @@
         </tr>
 
         <tr>
-          <td></td>
-          <td>
-            <label for="notext"><input id="notext" type="checkbox"/> Don't drag when clicking on text</label><br/>
+          <td class="setting_description">
+            <h2>Disabled Elements</h2>
+            Which elements will you <strong>disable</strong> dragging on?
           </td>
-        </tr>
-
-          <!--
-           ██████  ██████  ████████ ██  ██████  ███    ██ ███████
-          ██    ██ ██   ██    ██    ██ ██    ██ ████   ██ ██
-          ██    ██ ██████     ██    ██ ██    ██ ██ ██  ██ ███████
-          ██    ██ ██         ██    ██ ██    ██ ██  ██ ██      ██
-           ██████  ██         ██    ██  ██████  ██   ████ ███████
-          -->
-
-        <tr>
-          <td></td>
           <td>
-            <label for="nolinks"><input id="nolinks" type="checkbox"/> Don't drag when clicking on links</label><br/>
-          </td>
-        </tr>
-
-        <tr>
-          <td></td>
-          <td>
-            <label for="noimages"><input id="noimages" type="checkbox"/> Don't drag when clicking on images</label><br/>
+            <table style="border: none">
+              <tr>
+                <td style="width:100px">
+                    <input id="notext" type="checkbox" /> <label for="notext">Text</label></td>
+                <td><input id="nolinks" type="checkbox" /><label for="nolinks">Links</label></td>
+              </tr>
+              <tr>
+                <td><input id="noimages" type="checkbox" /><label for="noimages">Images</label></td>
+                <td><input id="noembeds" type="checkbox" /><label for="noembeds">Embedded Content</label></td>
+              </tr>
+            </table>
           </td>
         </tr>
 
