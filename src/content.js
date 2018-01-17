@@ -81,6 +81,14 @@ ScrollbarAnywhere = (function() {
   function vmag(v)     { return Math.sqrt(v[0]*v[0] + v[1]*v[1]) }
   function vunit(v)    { return vdiv(vmag(v),v) }
 
+  /*
+  ██ ███████  ██████  ██    ██ ███████ ██████  ████████ ███████ ██   ██ ████████
+  ██ ██      ██    ██ ██    ██ ██      ██   ██    ██    ██       ██ ██     ██
+  ██ ███████ ██    ██ ██    ██ █████   ██████     ██    █████     ███      ██
+  ██      ██ ██    ██  ██  ██  ██      ██   ██    ██    ██       ██ ██     ██
+  ██ ███████  ██████    ████   ███████ ██   ██    ██    ███████ ██   ██    ██
+  */
+
 
   // Test if the given point is directly over text
   var isOverText = (function() {
