@@ -613,8 +613,13 @@ ScrollbarAnywhere = (function() {
         break
       }
 
-      if (hasOverrideAncestor(ev.target)) {
+      if (hasMandatoryOverrideAncestor(ev.target)) {
         debug("forbidden target element, ignoring",ev)
+        break
+      }
+
+      if (hasOptionalOverrideAncestor(ev.target)) {
+        debug("optional element disabled, ignoring",ev)
         break
       }
 
