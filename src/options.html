@@ -104,19 +104,24 @@
             Which elements will you <strong>disable</strong> dragging on?
           </td>
           <td>
-            <table style="border: none">
+            <table style="border: 1px solid red;">
               <tr>
-                <td style="width:100px">
-                    <input id="notext" type="checkbox" /><label for="notext">Text</label></td>
-                <td><input id="nolinks" type="checkbox" /><label for="nolinks">Links</label></td>
+                <td>
+                  <input id="notext" type="checkbox" /><label for="notext">Text</label>
+                  <table style="border: none">
+                    <tr><td><input id="nolinks" type="checkbox" style="margin-left: 20px" /><label for="nolinks">Links</label></td></tr>
+                    <tr><td><input id="nobuttons" type="checkbox" style="margin-left: 20px" /><label for="nobuttons">Buttons</label></td></tr>
+                    <tr><td><input id="nolabels" type="checkbox" style="margin-left: 20px" /><label for="nolabels">Labels</label></td></tr>
+                  </table>
+                </td>
               </tr>
               <tr>
-                <td><input id="noimages" type="checkbox" /><label for="noimages">Images</label></td>
-                <td><input id="noembeds" type="checkbox" /><label for="noembeds">Embedded Content</label></td>
-              </tr>
-              <tr>
-                <td><input id="nobuttons" type="checkbox" /><label for="nobuttons">Buttons</label></td>
-                <td><input id="nolabels" type="checkbox" /><label for="nolabels">Labels</label></td>
+                <td>
+                  <input id="noimages" type="checkbox" /><label for="noimages">Images</label>
+                  <table style="border: none">
+                  <tr><td><input id="noembeds" type="checkbox" style="margin-left: 20px" /><label for="noembeds">Embedded Content</label></td></tr>
+                  </table>
+                </td>
               </tr>
             </table>
           </td>
