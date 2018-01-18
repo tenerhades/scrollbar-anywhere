@@ -192,14 +192,10 @@ ScrollbarAnywhere = (function() {
   */
 
   // Don't drag when left-clicking on these elements
-  const LBUTTON_OVERRIDE_TAGS = ['A','INPUT','SELECT','TEXTAREA','BUTTON','LABEL','OBJECT','EMBED']
-  const MBUTTON_OVERRIDE_TAGS = ['A']
-  const RBUTTON_OVERRIDE_TAGS = ['A','INPUT','TEXTAREA','OBJECT','EMBED']
-  function hasOverrideAncestor(e) {
+  const MANDATORY_OVERRIDE_TAGS = ['INPUT', 'TEXTAREA']
+  function hasMandatoryOverrideAncestor(e) {
     if (e == null) return false
-    if (options.button == LBUTTON && shouldOverrideLeftButton(e)) return true;
-    if (options.button == MBUTTON && MBUTTON_OVERRIDE_TAGS.some(function(tag) { return tag == e.tagName })) return true
-    if (options.button == RBUTTON && RBUTTON_OVERRIDE_TAGS.some(function(tag) { return tag == e.tagName })) return true
+    if (MANDATORY_OVERRIDE_TAGS.some(function(tag) { return tag == e.tagName })) return true
     return arguments.callee(e.parentNode)
   }
 
