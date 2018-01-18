@@ -205,7 +205,7 @@ ScrollbarAnywhere = (function() {
   function hasOptionalOverrideAncestor(e) {
     if (e == null) return false
     if (options.nolinks && e.tagName == 'A') return true
-    if (options.nobuttons && hasRoleButtonAttribute(e)) return true
+    if (options.nobuttons && (e.tagName == 'BUTTON' || hasRoleButtonAttribute(e))) return true
     if (options.nolabels && e.tagName == 'LABEL') return true
     if (options.noimages && e.tagName == 'IMG') return true
     if (options.noembeds && e.tagName == 'OBJECT') return true
