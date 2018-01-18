@@ -85,6 +85,18 @@ function load() {
 var updateTimeoutId
 
 function onUpdate(ev) {
+  if (ev.target == $('notext') && $('notext').checked == true) {
+    ['nolinks', 'nobuttons', 'nolabels'].forEach(function(id) {
+      $(id).checked = true;
+      $(id).disabled = true;
+    })
+  }
+
+  if (ev.target == $('noimages')) {
+    $('noembeds').checked = true
+    $('noembeds').disabled = true
+  }
+
   if (updateTimeoutId != null) clearTimeout(updateTimeoutId)
   updateTimeoutId = setTimeout(save,200)
 
