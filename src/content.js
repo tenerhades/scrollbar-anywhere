@@ -179,7 +179,7 @@ ScrollbarAnywhere = (function() {
     }
   }
 
-  // Don't drag when left-clicking on these elements
+  // Don't drag when clicking on these elements
   const MANDATORY_OVERRIDE_TAGS = ['INPUT', 'TEXTAREA', 'SELECT']
   function hasMandatoryOverrideAncestor(e) {
     if (e == null) return false
