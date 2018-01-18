@@ -198,6 +198,7 @@ ScrollbarAnywhere = (function() {
   }
 
   function hasRoleButtonAttribute(e) {
+    // FIXME: github has a lot of links that look like buttons...
     if (e.attributes && e.attributes.role) {
       return e.attributes.role.value === 'button';
     }
