@@ -91,8 +91,8 @@ function load() {
 var updateTimeoutId
 
 function onUpdate(ev) {
-  // FIXME: after reload options page, sub-checkmarks are no longer checked
-  //        or disabled
+  // FIXME: after reload options page, sub-checkmarks no longer show as being
+  // checked/disabled, but they are working correctly.
   if (ev.target == $('notext')) {
     ['nolinks', 'nobuttons', 'nolabels'].forEach(function(id) {
       $(id).checked = ($('notext').checked === true)
