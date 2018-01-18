@@ -85,16 +85,16 @@ function load() {
 var updateTimeoutId
 
 function onUpdate(ev) {
-  if (ev.target == $('notext') && $('notext').checked == true) {
+  if (ev.target == $('notext')) {
     ['nolinks', 'nobuttons', 'nolabels'].forEach(function(id) {
-      $(id).checked = true;
-      $(id).disabled = true;
+      $(id).checked = ($('notext').checked === true)
+      $(id).disabled = ($('notext').checked === true)
     })
   }
 
   if (ev.target == $('noimages')) {
-    $('noembeds').checked = true
-    $('noembeds').disabled = true
+    $('noembeds').checked = ($('noimages').checked === true)
+    $('noembeds').disabled = ($('noimages').checked === true)
   }
 
   if (updateTimeoutId != null) clearTimeout(updateTimeoutId)
