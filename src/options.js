@@ -52,6 +52,8 @@ function save() {
 
   o.cursor = $('cursor').checked
   o.notext = $('notext').checked
+  o.nolinks = $('nolinks').checked
+  o.noimages = $('noimages').checked // WIP
   o.grab_and_drag = $('grab_and_drag').checked
   o.debug = $('debug').checked
 
@@ -74,6 +76,8 @@ function load() {
 
   $('cursor').checked = (o.cursor == "true")
   $('notext').checked = (o.notext == "true")
+  $('nolinks').checked = (o.nolinks == "true")
+  $('noimages').checked = (o.noimages == "true") // WIP
   $('grab_and_drag').checked = (o.grab_and_drag == "true")
   $('debug').checked = (o.debug == "true")
 }

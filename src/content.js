@@ -18,6 +18,8 @@ ScrollbarAnywhere = (function() {
       options = msg.saveOptions
       options.cursor = (options.cursor == "true")
       options.notext = (options.notext == "true")
+      options.nolinks = (options.nolinks == "true")
+      options.noimages = (options.noimages == "true") // WIP
       options.grab_and_drag = (options.grab_and_drag == "true")
       options.debug = (options.debug == "true")
       options.enabled = isEnabled(options.blacklist)
@@ -201,8 +203,11 @@ ScrollbarAnywhere = (function() {
     return arguments.callee(e.parentNode)
   }
 
-  function shouldOverrideLeftButton(e) {
-    return LBUTTON_OVERRIDE_TAGS.some(function(tag) { return tag == e.tagName; }) || hasRoleButtonAttribute(e);
+  function hasOptionalOverrideAncestor(e) {
+    if (e == null) return false
+    if (options.nolinks && e.tagName == 'A') return true
+    if (options.noimages && e.tagName == 'IMG') return true // WIP
+    return arguments.callee(e.parentNode)
   }
 
   function hasRoleButtonAttribute(e) {
