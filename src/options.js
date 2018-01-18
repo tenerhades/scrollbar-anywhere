@@ -92,7 +92,16 @@ function onUpdate(ev) {
 
 document.addEventListener('DOMContentLoaded', function(ev) {
   load();
-  ['button','cursor','notext','debug', 'grab_and_drag'].forEach(function(id) {
+  ['button',
+  'cursor',
+  'notext',
+  'nolinks',
+  'nobuttons',
+  'nolabels',
+  'noimages',
+  'noembeds',
+  'debug',
+  'grab_and_drag'].forEach(function(id) {
     $(id).addEventListener('change',onUpdate,false)
   })
 
