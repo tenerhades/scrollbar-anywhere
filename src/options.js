@@ -53,7 +53,10 @@ function save() {
   o.cursor = $('cursor').checked
   o.notext = $('notext').checked
   o.nolinks = $('nolinks').checked
-  o.noimages = $('noimages').checked // WIP
+  o.nobuttons = $('nobuttons').checked
+  o.nolabels = $('nolabels').checked
+  o.noimages = $('noimages').checked
+  o.noembeds = $('noembeds').checked
   o.grab_and_drag = $('grab_and_drag').checked
   o.debug = $('debug').checked
 
@@ -77,7 +80,10 @@ function load() {
   $('cursor').checked = (o.cursor == "true")
   $('notext').checked = (o.notext == "true")
   $('nolinks').checked = (o.nolinks == "true")
-  $('noimages').checked = (o.noimages == "true") // WIP
+  $('nobuttons').checked = (o.nobuttons == "true")
+  $('nolabels').checked = (o.nolabels == "true")
+  $('noimages').checked = (o.noimages == "true")
+  $('noembeds').checked = (o.noembeds == "true")
   $('grab_and_drag').checked = (o.grab_and_drag == "true")
   $('debug').checked = (o.debug == "true")
 }
@@ -85,6 +91,8 @@ function load() {
 var updateTimeoutId
 
 function onUpdate(ev) {
+  // FIXME: after reload options page, sub-checkmarks are no longer checked
+  //        or disabled
   if (ev.target == $('notext')) {
     ['nolinks', 'nobuttons', 'nolabels'].forEach(function(id) {
       $(id).checked = ($('notext').checked === true)

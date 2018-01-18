@@ -19,7 +19,10 @@ ScrollbarAnywhere = (function() {
       options.cursor = (options.cursor == "true")
       options.notext = (options.notext == "true")
       options.nolinks = (options.nolinks == "true")
-      options.noimages = (options.noimages == "true") // WIP
+      options.nobuttons = (options.nobuttons == "true")
+      options.nolabels = (options.nolabels == "true")
+      options.noimages = (options.noimages == "true")
+      options.noembeds = (options.noembeds == "true")
       options.grab_and_drag = (options.grab_and_drag == "true")
       options.debug = (options.debug == "true")
       options.enabled = isEnabled(options.blacklist)
@@ -202,7 +205,10 @@ ScrollbarAnywhere = (function() {
   function hasOptionalOverrideAncestor(e) {
     if (e == null) return false
     if (options.nolinks && e.tagName == 'A') return true
-    if (options.noimages && e.tagName == 'IMG') return true // WIP
+    if (options.nobuttons && hasRoleButtonAttribute(e)) return true
+    if (options.nolabels && e.tagName == 'LABEL') return true
+    if (options.noimages && e.tagName == 'IMG') return true
+    if (options.noembeds && e.tagName == 'OBJECT') return true
     return arguments.callee(e.parentNode)
   }
 
