@@ -86,13 +86,17 @@ function load() {
   $('noembeds').checked = (o.noembeds == "true")
   $('grab_and_drag').checked = (o.grab_and_drag == "true")
   $('debug').checked = (o.debug == "true")
+
+  // Should only need to make sure we disable these on page [re]load.
+  $('nolinks').disabled = (o.notext == "true")
+  $('nobuttons').disabled = (o.notext == "true")
+  $('nolabels').disabled = (o.notext == "true")
+  $('noembeds').disabled = (o.noimages == "true")
 }
 
 var updateTimeoutId
 
 function onUpdate(ev) {
-  // FIXME: after reload options page, sub-checkmarks no longer show as being
-  // checked/disabled, but they are working correctly.
   if (ev.target == $('notext')) {
     ['nolinks', 'nobuttons', 'nolabels'].forEach(function(id) {
       $(id).checked = ($('notext').checked === true)
