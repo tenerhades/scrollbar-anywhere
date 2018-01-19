@@ -193,7 +193,7 @@ ScrollbarAnywhere = (function() {
     if (options.nobuttons && (e.tagName == 'BUTTON' || hasRoleButtonAttribute(e))) return true
     if (options.nolabels && e.tagName == 'LABEL') return true
     if (options.noimages && e.tagName == 'IMG') return true
-    if (options.noembeds && e.tagName == 'OBJECT') return true
+    if (options.noembeds && (e.tagName == 'OBJECT' || e.tagName == 'EMBED') return true
     return arguments.callee(e.parentNode)
   }
 
