@@ -47,6 +47,47 @@ function saveOptions(o) {
   }
 }
 
+// This does not require "permissions":["tabs"] becuase it only acts on its
+// current tab.
+chrome.contextMenus.create({
+  title:"Add site to SA blacklist",
+  contexts:["all"],
+  type:"normal",
+  onclick:function(info, tab) {
+    console.log("tab.url:", tab.url)
+
+    // 'document.location.hostname' here is a string containing our app ID.
+    // So we'll need to parse tab.url (or info.pageUrl) instead.
+    var dummy = document.createElement('a')
+    dummy.href = tab.url
+    console.log("dummy.hostname=",dummy.hostname)
+
+    // Use dummy.hostname for now; If @davidparsson agrees on issue #68, then
+    // this should change to use dummy.host as well.
+    blacklist = localStorage["blacklist"].split('\n')
+    console.log("blacklist=",blacklist)
+
+    for (var i = blacklist.length - 1; i >= 0; i--) {
+      var blacklistEntry = blacklist[i].trim();
+      console.log('testing entry', blacklistEntry)
+      if (dummy.hostname === blacklistEntry) {
+        // no need to check subdomains when adding to list
+        console.log('hostname already in blacklist')
+        return
+      }
+    }
+    // else
+    console.log('pushing to blacklist')
+    console.log('before', localStorage['blacklist'])
+
+    blacklist.push(dummy.hostname)
+    localStorage['blacklist'] = blacklist.join('\n')
+
+    console.log('after', localStorage['blacklist'])
+    saveOptions({o:'blacklist'})
+  }
+})
+
 // Inject content script into all existing tabs (doesn't work)
 // This functionality requires
 //  "permissions": ["tabs"]
