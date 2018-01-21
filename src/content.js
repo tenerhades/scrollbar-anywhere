@@ -805,6 +805,8 @@ ScrollbarAnywhere = (function() {
       addEventListener("mousemove",     onMouseMove,   true)
       addEventListener("mouseout",      onMouseOut,    true)
       addEventListener("contextmenu",   onContextMenu, true)
+      if ("onpointerlockchange" in document)
+        addEventListener("pointerlockchange", Pointer.changeDispatched, true)
     }
   }
 
