@@ -14,6 +14,8 @@ ScrollbarAnywhere = (function() {
       options.grab_and_drag = (options.grab_and_drag == "true")
       options.debug = (options.debug == "true")
       options.enabled = isEnabled(options.blacklist)
+      options.pointer_locking = (options.pointer_locking == "true")
+      options.doubleclicktime = 500 // TODO: add real option here
       debug("saveOptions: ",options)
     }
   })
@@ -496,6 +498,53 @@ ScrollbarAnywhere = (function() {
              listen: listen }
   })()
 
+  // === Pointer Locking ===
+
+  Pointer = (function() {
+    var pointerLocked = false
+
+    function lock(e) {
+      debug('locking pointer')
+      e.target.requestPointerLock()
+      pointerLocked = true
+    }
+
+    function unlock() {
+      debug('unlocking pointer')
+      document.exitPointerLock()
+      pointerLocked = false
+    }
+
+    function isPointerLocked() {
+      return pointerLocked
+    }
+
+    // Use a setter here since ESC can exit the pointer lock asynchronously
+    function setPointerLocked(locked) {
+      pointerLocked = locked
+    }
+
+    return { lock: lock,
+             unlock: unlock,
+             isPointerLocked: isPointerLocked,
+             setPointerLocked: setPointerLocked }
+  })()
+
+  // FIXME: This event is dispatched *after* Pointer.lock() is called.  Which
+  // means Pointer.isPointerLocked is being set to false, even tho the pointer
+  // is still locked.
+  //
+  // If this is a timing issue, then we can put a wrapper function here and use
+  // setTimeout().
+  //
+  // Otherwise, we can track another var "hasBeenDispatched" or something..
+  if ('onpointerlockchange' in document) {
+    document.addEventListener('pointerlockchange', function(ev) {
+      debug('here1')
+      if (Pointer.isPointerLocked()) Pointer.setPointerLocked(false)
+      debug('here2')
+    }, false)
+  }
 
   const LBUTTON=0, MBUTTON=1, RBUTTON=2
   const KEYS = ["shift","ctrl","alt","meta"]
@@ -510,6 +559,7 @@ ScrollbarAnywhere = (function() {
   var showScrollFix = false
   var mouseOrigin = null
   var dragElement = null
+  var lastUnclick = null
 
   function updateGlide() {
     if (activity == GLIDE) {
@@ -682,13 +732,26 @@ ScrollbarAnywhere = (function() {
     case STOP: break
 
     case CLICK:
-      debug("unclick, no drag")
-      Clipboard.unblockPaste()
-      ScrollFix.hide()
-      if (ev.button == 0) getSelection().removeAllRanges()
-      if (document.activeElement) document.activeElement.blur()
-      if (ev.target) ev.target.focus()
-      if (ev.button == options.button) activity = STOP
+      if (options.pointer_locking && Pointer.isPointerLocked()) {
+        Pointer.unlock()
+        activity = STOP
+      }
+      else {
+        debug("unclick, no drag")
+        Clipboard.unblockPaste()
+        ScrollFix.hide()
+        if (ev.button == 0) getSelection().removeAllRanges()
+        if (document.activeElement) document.activeElement.blur()
+        if (ev.target) ev.target.focus()
+        if (ev.button == options.button) activity = STOP
+
+        var thisUnclick = new Date().getTime()
+        if (thisUnclick - lastUnclick < options.doubleclicktime) {
+          debug('doubleclick detected')
+          if (options.pointer_locking) Pointer.lock(ev)
+        }
+        lastUnclick = thisUnclick
+      }
       break
 
     case DRAG:

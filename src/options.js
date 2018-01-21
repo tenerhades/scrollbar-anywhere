@@ -21,6 +21,14 @@ function save() {
     error("Somehow, you broke the button field")
   } else o.button = x
 
+  if (o.button == 0) {
+    $('pointerlock').style.color = "black"
+    $('pointer_locking').disabled = false
+  } else {
+    $('pointerlock').style.color = "gray"
+    $('pointer_locking').disabled = true
+  }
+
   x = $('scaling').value-0
   if (isNaN(x)) {
     error("Scaling must be a number")
@@ -53,6 +61,7 @@ function save() {
   o.cursor = $('cursor').checked
   o.notext = $('notext').checked
   o.grab_and_drag = $('grab_and_drag').checked
+  o.pointer_locking = $('pointer_locking').checked
   o.debug = $('debug').checked
 
   chrome.extension.getBackgroundPage().saveOptions(o)
@@ -75,6 +84,7 @@ function load() {
   $('cursor').checked = (o.cursor == "true")
   $('notext').checked = (o.notext == "true")
   $('grab_and_drag').checked = (o.grab_and_drag == "true")
+  $('pointer_locking').checked = (o.pointer_locking == "true")
   $('debug').checked = (o.debug == "true")
 }
 
@@ -92,7 +102,7 @@ function onUpdate(ev) {
 
 document.addEventListener('DOMContentLoaded', function(ev) {
   load();
-  ['button','cursor','notext','debug', 'grab_and_drag'].forEach(function(id) {
+  ['button','cursor','notext','debug', 'grab_and_drag', 'pointer_locking'].forEach(function(id) {
     $(id).addEventListener('change',onUpdate,false)
   })
 

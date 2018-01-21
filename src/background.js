@@ -9,6 +9,7 @@ defaultOptions = { "button":    2,
                    "cursor":    true,
                    "notext":    false,
                    "grab_and_drag": false,
+                   "pointer_locking": false,
                    "debug":     false,
                    "blacklist": "",
                  }
