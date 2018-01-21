@@ -611,6 +611,15 @@ ScrollbarAnywhere = (function() {
         break
       }
 
+      if (options.pointer_locking && Pointer.isPointerLocked()) {
+        debug('unlocking pointer')
+        Pointer.unlock()
+        Clipboard.blockPaste()
+        blockContextMenu = true;
+        ev.preventDefault()
+        break
+      }
+
       if (ev.button != options.button) {
         debug("wrong button, ignoring   ev.button="+ev.button+"   options.button="+options.button)
         break
@@ -704,26 +713,20 @@ ScrollbarAnywhere = (function() {
     case STOP: break
 
     case CLICK:
-      if (options.pointer_locking && Pointer.isPointerLocked()) {
-        Pointer.unlock()
-        activity = STOP
-      }
-      else {
-        debug("unclick, no drag")
-        Clipboard.unblockPaste()
-        ScrollFix.hide()
-        if (ev.button == 0) getSelection().removeAllRanges()
-        if (document.activeElement) document.activeElement.blur()
-        if (ev.target) ev.target.focus()
-        if (ev.button == options.button) activity = STOP
+      debug("unclick, no drag")
+      Clipboard.unblockPaste()
+      ScrollFix.hide()
+      if (ev.button == 0) getSelection().removeAllRanges()
+      if (document.activeElement) document.activeElement.blur()
+      if (ev.target) ev.target.focus()
+      if (ev.button == options.button) activity = STOP
 
-        var thisUnclick = new Date().getTime()
-        if (thisUnclick - lastUnclick < options.doubleclicktime) {
-          debug('doubleclick detected')
-          if (options.pointer_locking) Pointer.lock(ev)
-        }
-        lastUnclick = thisUnclick
+      var thisUnclick = new Date().getTime()
+      if (thisUnclick - lastUnclick < options.doubleclicktime) {
+        debug('doubleclick detected, locking pointer')
+        if (options.pointer_locking) Pointer.lock(ev)
       }
+      lastUnclick = thisUnclick
       break
 
     case DRAG:
