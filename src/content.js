@@ -499,6 +499,7 @@ ScrollbarAnywhere = (function() {
   })()
 
   // === Pointer Locking ===
+  // TODO: Gliding doesn't work yet. Look in stopDrag()
 
   Pointer = (function() {
     var pointerLocked = false
@@ -531,6 +532,7 @@ ScrollbarAnywhere = (function() {
   var showScrollFix = false
   var mouseOrigin = null
   var dragElement = null
+  var lockOrigin = null
   var lastUnclick = null
 
   function updateGlide() {
@@ -555,7 +557,19 @@ ScrollbarAnywhere = (function() {
 
   function updateDrag(ev) {
     debug("drag update")
-    var v = [ev.clientX,ev.clientY]
+    if (options.pointer_locking && Pointer.isPointerLocked()) {
+      // TODO?: This can probably reuse mouseOrigin
+      // FIXME: The first movement after the mouse locks makes the page
+      // scroll up by a little over 1 page length. Also, if pointer is locked
+      // from very top of the page, you have to scroll at least that page's
+      // length before the view is scrolled.
+      if (!lockOrigin) lockOrigin = [ev.clientX,ev.clientY]
+      lockOrigin[0] += ev.movementX
+      lockOrigin[1] += ev.movementY
+      var v = [ev.clientX + lockOrigin[0], ev.clientY + lockOrigin[1]];
+    }
+    else
+      var v = [ev.clientX,ev.clientY];
     var moving = false
     if (v[0] && v[1])
     {
@@ -568,6 +582,7 @@ ScrollbarAnywhere = (function() {
   function startDrag(ev) {
     debug("drag start")
     activity = DRAG
+    // lockOrigin = [ev.clientX, ev.clientY]
     if (options.cursor) {
       document.body.style.cursor = "-webkit-grabbing";
       document.body.style.cursor = "-moz-grabbing";
@@ -588,9 +603,13 @@ ScrollbarAnywhere = (function() {
     } else {
       Scroll.stop()
       activity = STOP
+      lockOrigin = null
     }
   }
 
+  // FIXME: activity == DRAG when we're locked and we get here.
+  // we get "warning: illegal activity for mousedown"
+  // should i add "LOCK" or "LOCKING" as an activity?
   function onMouseDown(ev) {
     blockContextMenu = false
 
@@ -617,6 +636,7 @@ ScrollbarAnywhere = (function() {
         Clipboard.blockPaste()
         blockContextMenu = true;
         ev.preventDefault()
+        stopDrag(ev)
         break
       }
 
@@ -693,7 +713,8 @@ ScrollbarAnywhere = (function() {
       break
 
     case DRAG:
-      if (ev.buttons == buttonToMouseMoveButtons(options.button)) {
+      if (ev.buttons == buttonToMouseMoveButtons(options.button) ||
+          (options.pointer_locking && Pointer.isPointerLocked())) {
         updateDrag(ev);
         ev.preventDefault();
       }
@@ -723,8 +744,15 @@ ScrollbarAnywhere = (function() {
 
       var thisUnclick = new Date().getTime()
       if (thisUnclick - lastUnclick < options.doubleclicktime) {
-        debug('doubleclick detected, locking pointer')
-        if (options.pointer_locking) Pointer.lock(ev)
+        debug('doubleclick detected')
+        if (options.pointer_locking) {
+          debug('locking pointer')
+          Pointer.lock(ev)
+          // mouseOrigin = [ev.clientX, ev.clientY]
+          // Motion.impulse(mouseOrigin, ev.timeStamp)
+          startDrag(ev)
+          // showScrollFix = true;
+        }
       }
       lastUnclick = thisUnclick
       break
