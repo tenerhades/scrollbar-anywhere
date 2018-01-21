@@ -503,48 +503,20 @@ ScrollbarAnywhere = (function() {
   Pointer = (function() {
     var pointerLocked = false
 
-    function lock(e) {
-      debug('locking pointer')
-      e.target.requestPointerLock()
-      pointerLocked = true
-    }
+    function lock(e) { e.target.requestPointerLock() }
 
-    function unlock() {
-      debug('unlocking pointer')
-      document.exitPointerLock()
-      pointerLocked = false
-    }
+    // note: this is not called when Esc is pressed
+    function unlock() { document.exitPointerLock() }
 
-    function isPointerLocked() {
-      return pointerLocked
-    }
+    function isPointerLocked() { return pointerLocked }
 
-    // Use a setter here since ESC can exit the pointer lock asynchronously
-    function setPointerLocked(locked) {
-      pointerLocked = locked
-    }
+    function changeDispatched(e) { pointerLocked = !pointerLocked }
 
     return { lock: lock,
              unlock: unlock,
              isPointerLocked: isPointerLocked,
-             setPointerLocked: setPointerLocked }
+             changeDispatched: changeDispatched }
   })()
-
-  // FIXME: This event is dispatched *after* Pointer.lock() is called.  Which
-  // means Pointer.isPointerLocked is being set to false, even tho the pointer
-  // is still locked.
-  //
-  // If this is a timing issue, then we can put a wrapper function here and use
-  // setTimeout().
-  //
-  // Otherwise, we can track another var "hasBeenDispatched" or something..
-  if ('onpointerlockchange' in document) {
-    document.addEventListener('pointerlockchange', function(ev) {
-      debug('here1')
-      if (Pointer.isPointerLocked()) Pointer.setPointerLocked(false)
-      debug('here2')
-    }, false)
-  }
 
   const LBUTTON=0, MBUTTON=1, RBUTTON=2
   const KEYS = ["shift","ctrl","alt","meta"]
