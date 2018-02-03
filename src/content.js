@@ -258,8 +258,7 @@ var ScrollbarAnywhere = (function() {
 
     function createScrollFix() {
       scrollFixElement = document.createElement("div");
-      // scrollFixElement.setAttribute("style", "background: transparent none !important");
-      scrollFixElement.setAttribute("style", "background: red !important");
+      scrollFixElement.setAttribute("style", "background: transparent none !important");
       scrollFixElement.style.position = "fixed";
       scrollFixElement.style.top = "0";
       scrollFixElement.style.right = "0";
