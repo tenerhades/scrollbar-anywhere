@@ -1,4 +1,5 @@
-defaultOptions = { "button":    2,
+// @ts-check
+var defaultOptions = { "button":    2,
                    "key_shift": false,
                    "key_ctrl":  false,
                    "key_alt":   false,
@@ -30,9 +31,9 @@ function loadOptions() {
   return o
 }
 
-clients = {}
+var clients = {}
 
-chrome.extension.onConnect.addListener(function(port) {
+chrome.runtime.onConnect.addListener(function(port) {
   port.postMessage({ saveOptions: localStorage })
   var id = port.sender.tab.id + ":" + port.sender.frameId
   console.log("connect: "+id)
@@ -71,17 +72,17 @@ chrome.contextMenus.create({
   title:"Add site to SA blacklist",
   contexts:["all"],
   type:"normal",
-  onclick:function(info, tab) {
+  onclick: (info, tab) => {
     // 'document.location.hostname' here is a string containing our app ID.
     // info.pageUrl and tab.url are both the full URL of this page, we only
     // want the hostname, so use a dummy object (instead of requiring another
     // library to parse the URL)
-    var dummy = document.createElement('a')
+    let dummy = document.createElement('a')
     dummy.href = tab.url
 
     // Use dummy.hostname for now; If @davidparsson agrees on issue #68, then
     // this should change to use dummy.host as well.
-    blacklist = localStorage["blacklist"].split('\n')
+    let blacklist = localStorage["blacklist"].split('\n')
 
     for (var i = blacklist.length - 1; i >= 0; i--) {
       var blacklistEntry = blacklist[i].trim();

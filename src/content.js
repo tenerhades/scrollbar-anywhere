@@ -1,5 +1,6 @@
 
-ScrollbarAnywhere = (function() {
+//@ts-check
+var ScrollbarAnywhere = (function() {
 
   // === Options ===
 
@@ -256,16 +257,17 @@ ScrollbarAnywhere = (function() {
     var scrollFixElement = null;
 
     function createScrollFix() {
-      scrollFixElement = document.createElement('div');
-      scrollFixElement.setAttribute('style', 'background: transparent none !important');
-      scrollFixElement.style.position = 'fixed';
-      scrollFixElement.style.top=0;
-      scrollFixElement.style.right=0;
-      scrollFixElement.style.bottom=0;
-      scrollFixElement.style.left=0;
-      scrollFixElement.style.zIndex=99999999;
-      scrollFixElement.style.display='block';
-      //scrollFixElement.style.borderRight='5px solid rgba(0,0,0,0.04)';
+      scrollFixElement = document.createElement("div");
+      // scrollFixElement.setAttribute("style", "background: transparent none !important");
+      scrollFixElement.setAttribute("style", "background: red !important");
+      scrollFixElement.style.position = "fixed";
+      scrollFixElement.style.top = "0";
+      scrollFixElement.style.right = "0";
+      scrollFixElement.style.bottom = "0";
+      scrollFixElement.style.left = "0";
+      scrollFixElement.style.zIndex = "99999999";
+      scrollFixElement.style.display = "block";
+      //scrollFixElement.style.borderRight="5px solid rgba(0,0,0,0.04)";
     }
 
     function show() {
@@ -429,7 +431,7 @@ ScrollbarAnywhere = (function() {
   })()
 
 
-  Scroll = (function() {
+  var Scroll = (function() {
     var scrolling = false
     var element
     var scrollOrigin
@@ -593,7 +595,7 @@ ScrollbarAnywhere = (function() {
     switch (activity) {
 
     case GLIDE:
-      stopGlide(ev)
+      stopGlide()
       // fall through
 
     case STOP:
@@ -704,7 +706,7 @@ ScrollbarAnywhere = (function() {
       Clipboard.unblockPaste()
       ScrollFix.hide()
       if (ev.button == 0) getSelection().removeAllRanges()
-      if (document.activeElement) document.activeElement.blur()
+      if (document.activeElement) document.activeElement.blur() // FIXME: a) is this ever running? b) is it working when it does run?
       if (ev.target) ev.target.focus()
       if (ev.button == options.button) activity = STOP
       break
@@ -717,7 +719,7 @@ ScrollbarAnywhere = (function() {
       break
 
     case GLIDE:
-      stopGlide(ev)
+      stopGlide()
       break
 
     default:
